@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinCalc Pro - Business Loan & Amortization Calculator</title>
+    <!-- Tailwind CSS for utility styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Custom external CSS stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-50 min-h-screen text-slate-800 flex flex-col justify-between antialiased">
+
+    <!-- LAYER 3 (UI): Header & Branding Bar -->
+    <header class="bg-slate-900 text-white py-6 px-4 shadow-md border-b border-slate-800">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+                    <svg class="w-7 h-7 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    FinCalc Pro
+                </h1>
+                <p class="text-xs text-slate-400 mt-1">MGIS 130 — Business Loan Calculator (3-Layer Architecture)</p>
+            </div>
+            <div class="hidden sm:block">
+                <span class="bg-blue-500/10 text-blue-400 text-xs px-3 py-1.5 rounded-full border border-blue-500/20 font-medium">
+                    Fall 2026 Submission
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-8 w-full flex-grow">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- LAYER 3 (UI): Input Controls Section (Cols 1-5) -->
+            <section class="lg:col-span-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                <div>
+                    <h2 class="text-lg font-semibold text-slate-900 mb-1">Loan Parameters</h2>
+                    <p class="text-xs text-slate-500 mb-6">Adjust the sliders or type input parameters directly.</p>
+                    
+                    <form id="loan-form" class="space-y-6" onsubmit="return false;">
+                        <!-- Loan Amount Input Group -->
+                        <div>
+                            <div class="flex justify-between items-center mb-1">
+                                <label for="loan-amount" class="text-sm font-medium text-slate-700">Loan Amount ($)</label>
+                                <span id="amount-badge" class="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded">$250,000</span>
+                            </div>
+                            <div class="relative mb-2">
+                                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 font-medium">$</span>
+                                <input type="number" id="loan-amount" min="1000" max="10000000" step="500" value="250000" required 
+                                    class="pl-8 w-full rounded-lg border-slate-300 border p-2.5 text-slate-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition text-sm">
+                            </div>
+                            <input type="range" id="loan-amount-slider" min="5000" max="1000000" step="5000" value="250000" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer">
+                        </div>
+
+                        <!-- Annual Interest Rate Group -->
+                        <div>
+                            <div class="flex justify-between items-center mb-1">
+                                <label for="interest-rate" class="text-sm font-medium text-slate-700">Annual Interest Rate (%)</label>
+                                <span id="rate-badge" class="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded">6.5%</span>
+                            </div>
+                            <div class="relative mb-2">
+                                <input type="number" id="interest-rate" min="0" max="30" step="0.1" value="6.5" required 
+                                    class="w-full rounded-lg border-slate-300 border p-2.5 text-slate-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition text-sm">
+                                <span class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 font-medium">%</span>
+                            </div>
+                            <input type="range" id="interest-rate-slider" min="0" max="20" step="0.1" value="6.5" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer">
+                        </div>
+
+                        <!-- Loan Term Selection -->
+                        <div>
+                            <label for="loan-term" class="block text-sm font-medium text-slate-700 mb-1">Loan Term (Years)</label>
+                            <select id="loan-term" class="w-full rounded-lg border-slate-300 border p-2.5 text-slate-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition text-sm bg-white">
+                                <option value="1">1 Year (12 Months)</option>
+                                <option value="3">3 Years (36 Months)</option>
+                                <option value="5">5 Years (60 Months)</option>
+                                <option value="10">10 Years (120 Months)</option>
+                                <option value="15">15 Years (180 Months)</option>
+                                <option value="30" selected>30 Years (360 Months)</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Form Control Buttons -->
+                <div class="pt-6 mt-6 border-t border-slate-100 flex gap-3">
+                    <button type="button" id="reset-btn" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-2.5 px-4 rounded-lg transition duration-150 text-sm">
+                        Reset Defaults
+                    </button>
+                </div>
+            </section>
+
+            <!-- LAYER 3 (UI): Results Display Section (Cols 6-12) -->
+            <section class="lg:col-span-7 space-y-6">
+                
+                <!-- KPI Key Financial Metrics Summary -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="bg-blue-600 text-white p-5 rounded-xl shadow-sm">
+                        <p class="text-xs font-medium text-blue-100 uppercase tracking-wider">Monthly Payment</p>
+                        <p id="output-monthly" class="text-2xl sm:text-3xl font-bold mt-1">$0.00</p>
+                        <p class="text-[11px] text-blue-200 mt-1">Principal + Interest</p>
+                    </div>
+                    <div class="bg-white border border-slate-200 p-5 rounded-xl shadow-sm">
+                        <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Total Interest</p>
+                        <p id="output-interest" class="text-xl sm:text-2xl font-bold text-slate-800 mt-1">$0.00</p>
+                        <p id="output-interest-percent" class="text-[11px] text-slate-400 mt-1">0% of total loan</p>
+                    </div>
+                    <div class="bg-white border border-slate-200 p-5 rounded-xl shadow-sm">
+                        <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Total Repayment</p>
+                        <p id="output-total" class="text-xl sm:text-2xl font-bold text-slate-800 mt-1">$0.00</p>
+                        <p class="text-[11px] text-slate-400 mt-1">Principal + Total Interest</p>
+                    </div>
+                </div>
+
+                <!-- Principal vs Interest Visual Ratio Bar -->
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                    <h3 class="text-sm font-semibold text-slate-900 mb-2">Cost Breakdown Ratio</h3>
+                    <div class="w-full h-4 bg-slate-100 rounded-full overflow-hidden flex">
+                        <div id="bar-principal" class="bg-blue-600 h-full transition-all duration-300" style="width: 50%;"></div>
+                        <div id="bar-interest" class="bg-amber-500 h-full transition-all duration-300" style="width: 50%;"></div>
+                    </div>
+                    <div class="flex justify-between items-center text-xs text-slate-500 mt-2">
+                        <div class="flex items-center gap-1.5">
+                            <span class="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span>
+                            <span>Principal: <strong id="lbl-principal-val">$0</strong></span>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span>
+                            <span>Interest: <strong id="lbl-interest-val">$0</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Amortization Schedule Data Table -->
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center">
+                        <h3 class="font-semibold text-slate-900 text-sm">Amortization Preview (First 12 Months)</h3>
+                        <span class="text-xs text-slate-400">Monthly breakdown</span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs sm:text-sm text-slate-600">
+                            <thead class="bg-slate-50 text-slate-500 uppercase text-[10px] tracking-wider border-b border-slate-100">
+                                <tr>
+                                    <th class="px-4 py-3">Month</th>
+                                    <th class="px-4 py-3">Payment</th>
+                                    <th class="px-4 py-3">Principal</th>
+                                    <th class="px-4 py-3">Interest</th>
+                                    <th class="px-4 py-3">Remaining Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody id="schedule-body" class="divide-y divide-slate-100">
+                                <!-- Populated dynamically by app.js -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </section>
+        </div>
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 py-4 px-4 text-center text-xs text-slate-500">
+        <p class="max-w-6xl mx-auto">MGIS 130 Web Application Assignment — Implemented using Three-Layer Architecture.</p>
+    </footer>
+
+    <!-- External Business Logic & UI Controller Script -->
+    <script src="app.js"></script>
+</body>
+</html>
